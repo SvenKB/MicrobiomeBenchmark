@@ -35,6 +35,7 @@ library(dplyr)
 .pull-left[
 - 16s rRNA gene sequencing
 - shotgun metagenomic sequencing
+- test
 ]
 
 .pull-right[
@@ -78,7 +79,7 @@ d %>%
 - Zero-inflated
 - Multivariate
 - Unequal sequencing depth
-- Over-dispersion
+- Over-dispersed
 
 ---
 
@@ -95,11 +96,11 @@ d %>%
 # Data-generating mechanisms
 
 - true data-generating mechanism unknown
-- simulation based on probability model may not represent true data structure
+- simulation based on parametric model may not represent true data structure
 - possible solution:
       - resampling from a large set of samples taken from healthy subjects
-      - induce effects on top of resampling dataset using probability model
-- comes with drawbacks
+      - induce effects on top of resampling dataset using parametric model
+- drawbacks:
       - "spurious" effects due to resampling
       - effect of interest will be a combinations of "true" effect and noise in the data
 - Data characteristics may vary with taxonomic depth
@@ -110,6 +111,11 @@ d %>%
       - higher ranks:
             - compositionality
       
+---
+
+# Data generating mechanisms
+- $n_{obs} = 50,100,150,200,400,1000$
+- 
 
 
 ---
@@ -123,5 +129,12 @@ d %>%
 ---
 
 # Performance measures
+
+- Coverage  $$Pr(\hat{\theta}_{low} < \theta < \hat{\theta}_{upp})$$
+- Power / type-I error rate $$ Pr(p_i \leq \alpha)$$
+- Bias $$ E[\hat{\theta}] - \theta $$
+- Empirical SE $$ \sqrt{Var(\hat{\theta})} $$
+- MSE $$ E[(\hat{\theta} - \theta)^2] $$
+
 
 ---
