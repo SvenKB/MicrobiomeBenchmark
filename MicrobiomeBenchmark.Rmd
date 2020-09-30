@@ -63,11 +63,16 @@ d %>%
   scrollX = TRUE,
   scrollY = TRUE,
   scrollCollapse = TRUE))
-  
 
 ```
----
 
+???
+- 300 genera
+- Rows = Observations ; Columns = Bacteria ; each cell = counts
+- highly variable abundance
+- zero-inflation
+- sequencing depth ; variable between observations
+- higher taxonomic ranks by summing lower ranks up ; lower sparsity
 
 ---
 
@@ -81,40 +86,49 @@ d %>%
 - Unequal sequencing depth
 - Over-dispersed
 
+???
+
+- here, 300, but possible up to multiple thousands
+- multivariate; complex biological interactions
+- over-dispersed ; relared to many used parametric models
+- characteristics depend on taxonomic ranks
+
 ---
 
-# Aims
+# Aims and challenges
 
-- Provide pratical advice for choice of method
-- Evalute methods with respect to
-  -- different data characteristics
-  -- different taxonomic levels
+.pull-left[
+Challenges
+- "neutral" evaluation of performance
+- simulation of clustered / longitudinal effects
+- evaluation of influence of data characteristics
+- evaluation seperate for taxonomic ranks
+]
 
+.pull-right[
+Aims
+- guidance paper for (applied) researchers
+- easily interpretable
+
+]
 
 ---
 
 # Data-generating mechanisms
 
-- true data-generating mechanism unknown
+- perfect model that reflects data-generating process unclear
 - simulation based on parametric model may not represent true data structure
 - possible solution:
-      - resampling from a large set of samples taken from healthy subjects
-      - induce effects on top of resampling dataset using parametric model
+      - resampling from a large set of samples taken from (healthy) subjects
+      - parametric model "on-top" of resampled data
 - drawbacks:
       - "spurious" effects due to resampling
       - effect of interest will be a combinations of "true" effect and noise in the data
-- Data characteristics may vary with taxonomic depth
-      - lower ranks:
-            - dimensionality
-            - zero-inflation
-            - over-dispersion
-      - higher ranks:
-            - compositionality
-      
+
 ---
 
 # Data generating mechanisms
-- $n_{obs} = 50,100,150,200,400,1000$
+- $n_{obs} = [50,100,150,200,400,1000]$
 - 
 
 
