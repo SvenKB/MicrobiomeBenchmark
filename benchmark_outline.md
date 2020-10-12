@@ -1,7 +1,15 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Microbiome simulation study
 
 ## Microbiome data generating process
 ![16s gene](16s_var_region.png)
+
+<iframe width="800" height="400" src="https://www.youtube.com/embed/3UHiveJ1jzM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 <img src="https://www.researchgate.net/profile/Yuanqiang_Zou/publication/330862392/figure/fig1/AS:728652664811520@1550735741507/Phylogenetic-tree-of-1-520-isolated-gut-bacteria-based-on-whole-genome-sequences-The.png" alt="phylogeny" width="600"/>
 
@@ -76,7 +84,50 @@ Further, even when the Dirichlet multinomial model would perfectly resemble the 
 A sensible approach to ensure realistic data is resampling from true microbiome data. Resampling comes with several challenges compared to classical parametric simulations of data. First, resampled datasets will contain "noise" due to sampling variability which will decreasing with increasing sample size. However, as small sample sizes are common in microbiome studies, they should be subject of this benchmark as well. Therefore, sampling variablity needs to be taken into account when benchmarking methods based on resampled datsets. Secondly, resampling alone does not model the effects needed to benchmark the methods for differential abundance testing. As introduced, a common approach is to add univariate __spikes__ into selected features. However, in order to be able to model more complex situation, a different approach is needed.
 
 #### Parametric model for differential abundance effects
-Once a _realistic_ dataset is obtained from resampling, effects can be induced by a parametric model "on top" of the resampled dataset. Opting for this trade-off enables us to model complex effects.
+Once a _realistic_ dataset is obtained from resampling, effects can be induced by a parametric model "on top" of the resampled dataset. Opting for this trade-off enables us to model complex effects - among which longitudinal effects or other types of clustered effects - but still maintain realistic szenarios in the data.
+Suppose we want to model a true (multiplicative) effect of .2 with simple clustering as, for example, present in meta-analysis or multi-center studies. This model can be represented as
+\[
+\bar{\theta} = .2 \\
+\theta_i \sim \mathcal{N}(\bar{\theta},\sigma^2)
+\]
+where $\bar{\theta}$ is the true effect and $\theta_i$ are the realizations of this effect in the $i=1,...,N$ studies.
+Instead of using $\theta_i$ as a parameter in a model, we use the value of $\theta_i$ to induce a multiplicative (or additive) effect into study $i$ for a specific taxon. This simple model can be extended to various scenarios. E.g. an additional level in the hierarchy can be introduced to model effects that are present in a group of taxa (which may be more realistic due to functional related taxa). Further, this model can be extended by a multivariate normal distribution with a defined covariance structure to model longitudinal effects.
+
+
+
+
+##### Possible (biological) effects in microbiome data
+- Experimental
+- Ecological
+    - mutualism
+    - commensalism
+    - parasitism
+    - amensalism
+    - competition
+- Lotka-Volterra
+    - predator-prey relationship
+    - time-lagged longitudinal interaction
+- Timeseries
+
+
+#### Incorporating methods with different parameters
+When we want to move the evaluation of method performance beyond simple retrieval performance to standard performance measures in simulation studies, we need to
+
+
+#### Performance measures
+
+- Coverage
+    - $Pr(\hat{\theta}_{low} < \theta < \hat{\theta}_{upp})$
+- Power / type-I error rate
+    - $Pr(p_i \leq \alpha)$
+- Bias
+    - $E[\hat{\theta}] - \theta$
+- Empirical SE
+    - $\sqrt{Var(\hat{\theta})}$
+- MSE
+    - $E[(\hat{\theta} - \theta)^2]$
+
+
 
 
 # Literature
