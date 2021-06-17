@@ -1,0 +1,72 @@
+---
+title: "Differential abundance in clustered data"
+author: "Sven Kleine Bardenhorst"
+date: "29 12 2020"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(table1)
+library(microbiome)
+```
+# Data
+
+```{r}
+phyl <- readRDS(file = "Data/full_phyl.RDS")
+phyl <- microbiome::aggregate_taxa(phyl,level = "Genus")
+
+```
+
+```{r}
+df_sample <- sample_data(phyl) %>% data.frame() %>% dplyr::select(-ID) %>% rownames_to_column("ID")
+df_out <- as.data.frame(t(otu_table(phyl))) %>% rownames_to_column("ID")
+
+df <- df_sample %>%
+  dplyr::select(ID,author,status) %>%
+  left_join(df_out)
+
+
+table1::table1(~status|author,data=df)
+
+df %>%
+  dplyr::select(-ID) %>%
+  group_by(author) %>%
+  nest() %>%
+  dplyr::select(data) %>%
+  pull -> df_list
+
+```
+
+
+# Empirical rate ratio distributions
+
+```{r}
+
+
+IR1 <- sum(test$Bacteroides[test$status==1])/sum(test$N)
+IR2 <- sum(test$Bacteroides[test$status==0])/sum(test$N)
+
+IR1/IR2
+
+myRR <- function(i,x,N) {
+  (sum(x[i==1])/sum(N)) / (sum(x[i==0])/sum(N))
+}
+
+df$N <- apply(df[,-c(1:3)],1,sum)
+
+df$author
+test <- df %>% filter(author == "Aho et al., 2019") %>% mutate(status = ifelse(status=="PD",1,0))
+
+test %>% dplyr::select(Bifidobacterium,N)
+
+fit <- glm.nb(Bacteroides~status+offset(log(N)),data=test)
+exp(coef(fit))
+
+myRR(test$status,test$Bacteroides,test$N)
+
+```
+
+
+
+
